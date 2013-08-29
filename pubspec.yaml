@@ -1,0 +1,11 @@
+name: test_toolkit
+version: 0.1.0
+description: >
+  A simple test framework to organize your tests and keep them DRY.
+authors:
+ - Lewis Gunsch <lewis@gunsch.ca>
+
+dependencies:
+  unittest: any
+  log4dart: any
+
