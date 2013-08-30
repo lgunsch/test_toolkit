@@ -1,3 +1,5 @@
+// Copyright © 2013 Lewis Gunsch and contributors (see also: LICENSE)
+
 /**
  * A simple test framework for the dart language to organize your tests and keep them DRY.
  */

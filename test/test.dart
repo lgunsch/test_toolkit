@@ -1,4 +1,4 @@
-/* Main test runner */
+// Copyright © 2013 Lewis Gunsch and contributors (see also: LICENSE)
 
 import 'dart:async';
 
