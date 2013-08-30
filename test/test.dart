@@ -69,7 +69,7 @@ class Multi extends TestCase {
     status = 'ran';
   }
 
-  @testdoc('test 3')
+  // testdoc string is method name by default when its missing
   void testThird() {
     expect(status, equals('setUp'));
     status = 'ran';

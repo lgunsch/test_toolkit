@@ -40,27 +40,26 @@ class TestCase {
 
     for (var symbol in classMirror.methods.keys) {
       var name = MirrorSystem.getName(symbol);
-      if(name.startsWith('test') || name == 'runTest') {
-        var method = classMirror.methods[symbol];
-        var description = name;
-        for (var descriptor in method.metadata) {
-          if (descriptor.reflectee is testdoc) {
-            description = descriptor.reflectee.doc;
-          }
-        }
-
-        var owner = MirrorSystem.getName(method.owner.simpleName);
-        if (name == 'runTest' && owner.startsWith('TestCase')) {
-          continue;
-        }
-
-        _logger.info('Running test $name: $description.');
-        test(description, () {
-          setUp();
-          instanceMirror.invoke(symbol, []);
-          tearDown();
-        });
+      if (!_isTestMethod(name)) {
+        continue;
       }
+
+      var method = classMirror.methods[symbol];
+
+      // Skip runTest method if its not implemented in the child class.
+      var owner = MirrorSystem.getName(method.owner.simpleName);
+      if (name == 'runTest' && owner.startsWith('TestCase')) {
+        continue;
+      }
+
+      var description = _getDescription(method);
+      _logger.info('Running test $name: $description.');
+
+      test(description, () {
+        setUp();
+        instanceMirror.invoke(symbol, []);
+        tearDown();
+      });
     }
   }
 
@@ -68,6 +67,20 @@ class TestCase {
    *
    */
   void runTest() {}
+
+  bool _isTestMethod(String name) {
+    return name.startsWith('test') || name == 'runTest';
+  }
+
+  String _getDescription(MethodMirror method) {
+    var description = MirrorSystem.getName(method.simpleName);
+    for (var descriptor in method.metadata) {
+      if (descriptor.reflectee is testdoc) {
+        description = descriptor.reflectee.doc;
+      }
+    }
+    return description;
+  }
 }
 
 /**
