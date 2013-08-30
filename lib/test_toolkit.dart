@@ -66,6 +66,7 @@ class TestGroup {
   void runTest() {}
 
   void _run() {
+    var instanceMirror = reflect(this);
     var classMirror = instanceMirror.type;
 
     for (var symbol in classMirror.methods.keys) {
