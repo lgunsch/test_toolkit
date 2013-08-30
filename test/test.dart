@@ -13,26 +13,24 @@ import 'package:test_toolkit/test_toolkit.dart';
 void main() {
   useVMConfiguration();
 
-  // calling convention 1
+  // First calling convention.
   group('Simple', new SimpleGroup());
   group('Multi', new MultiGroup());
 
+  // Second calling convention.
   var simple = new SimpleGroup()
       ..groupRun();
   var multi = new MultiGroup()
       ..groupRun();
 
+  // You may also specify a description if you do not
+  // want to use the `groupdoc` metadata descriptor.
   simple.groupRun('Message for TestGroup with no groupdoc');
   multi.groupRun("groupdoc takes precedence");
 }
 
 
-class otherdescriptor {
-  final String doc;
-  const otherdescriptor(this.doc);
-}
-
-
+// SimpleGroup demonstrates a single test ran in a group
 class SimpleGroup extends TestGroup {
   String status;
 
@@ -54,6 +52,7 @@ class SimpleGroup extends TestGroup {
 }
 
 
+// MultiGroup demonstrates 3 test methods all ran in a group.
 @groupdoc('Multi groupdoc')
 class MultiGroup extends TestGroup {
   String status;
@@ -86,4 +85,10 @@ class MultiGroup extends TestGroup {
     expect(status, equals('setUp'));
     status = 'ran';
   }
+}
+
+
+class otherdescriptor {
+  final String doc;
+  const otherdescriptor(this.doc);
 }
