@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:unittest/unittest.dart' hide TestCase;
+import 'package:unittest/unittest.dart';
 import 'package:unittest/mock.dart';
 
 import 'package:unittest/vm_config.dart';
@@ -12,8 +12,18 @@ import 'package:test_toolkit/test_toolkit.dart';
 
 void main() {
   useVMConfiguration();
-  group('Simple', new Simple());
-  group('Multi', new Multi());
+
+  // calling convention 1
+  group('Simple', new SimpleGroup());
+  group('Multi', new MultiGroup());
+
+  var simple = new SimpleGroup()
+      ..groupRun();
+  var multi = new MultiGroup()
+      ..groupRun();
+
+  simple.groupRun('Message for TestGroup with no groupdoc');
+  multi.groupRun("groupdoc takes precedence");
 }
 
 
@@ -23,7 +33,7 @@ class otherdescriptor {
 }
 
 
-class Simple extends TestCase {
+class SimpleGroup extends TestGroup {
   String status;
 
   void setUp() {
@@ -39,11 +49,13 @@ class Simple extends TestCase {
 
   void tearDown() {
     expect(status, equals('runTest'));
+    status = null;
   }
 }
 
 
-class Multi extends TestCase {
+@groupdoc('Multi groupdoc')
+class MultiGroup extends TestGroup {
   String status;
 
   void setUp() {

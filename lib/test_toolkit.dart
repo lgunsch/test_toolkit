@@ -3,16 +3,16 @@ library test_toolkit;
 import 'dart:mirrors';
 
 import 'package:log4dart/log4dart.dart';
-import 'package:unittest/unittest.dart';
+import 'package:unittest/unittest.dart' as unittest;
 
 final _logger = LoggerFactory.getLogger("test_toolkit");
 
 /**
  *
  */
-class TestCase {
+class TestGroup {
 
-  TestCase();
+  TestGroup();
 
   /**
    *
@@ -23,6 +23,25 @@ class TestCase {
    *
    */
   void tearDown() {}
+
+  /**
+   *
+   */
+  void groupRun([String description]) {
+    var classMirror = reflect(this).type;
+    if (description == null) {
+      description = MirrorSystem.getName(classMirror.simpleName);
+    }
+
+    // Prefer groupdoc over description passed in as a parameter
+    var descriptors = classMirror.metadata;
+    for (var descriptor in descriptors) {
+      if (descriptor.reflectee is groupdoc) {
+        description = descriptor.reflectee.doc;
+      }
+    }
+    unittest.group(description, this.run);
+  }
 
   /**
    *
@@ -55,11 +74,9 @@ class TestCase {
       var description = _getDescription(method);
       _logger.info('Running test $name: $description.');
 
-      test(description, () {
-        setUp();
-        instanceMirror.invoke(symbol, []);
-        tearDown();
-      });
+      unittest.setUp(this.setUp);
+      unittest.tearDown(this.tearDown);
+      unittest.test(description, () => instanceMirror.invoke(symbol, []));
     }
   }
 
@@ -82,6 +99,16 @@ class TestCase {
     return description;
   }
 }
+
+
+/**
+ *
+ */
+class groupdoc {
+  final String doc;
+  const groupdoc(this.doc);
+}
+
 
 /**
  *
