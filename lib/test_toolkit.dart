@@ -50,7 +50,7 @@ class TestGroup {
         description = descriptor.reflectee.doc;
       }
     }
-    unittest.group(description, _run);
+    unittest.group(description, run);
   }
 
   /**
@@ -59,13 +59,17 @@ class TestGroup {
    *     group('description', new MyTestGroup());
    */
   void call() {
-    _run();
+    groupRun();
   }
 
   /** Implement this method to run a single test in the [group] */
   void runTest() {}
 
-  void _run() {
+  /**
+   * Run all the tests without a [group]; Use [groupRun] if you want them
+   * run in a [group]
+   */
+  void run() {
     var instanceMirror = reflect(this);
     var classMirror = instanceMirror.type;
 

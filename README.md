@@ -25,6 +25,9 @@ each method with `test` (implementing `runTest` is not required).
 
 Use `@groupdoc` and `@testdoc` to add `test` and `group` description strings.
 
+If you only want to run the tests, and not put them into a `group`, use the
+`run` method.
+
 See [test.dart][examples] in the test folder for a complete set of examples on
 how to use `TestGroup`.
 
@@ -38,6 +41,17 @@ import 'package:test_toolkit/test_toolkit.dart';
 void main() {
   group('Simple', new SimpleGroup());
   group('Multi', new MultiGroup());
+
+  group('other group', () {
+    test('first', () => expect(true, isTrue));
+    test('second', () => expect(true, isTrue));
+
+    // now add in the group test classes
+    var groups = [new SimpleGroup(), new MultiGroup()];
+    for (var group in groups) {
+      group.run();
+    }
+  });
 }
 
 class SimpleGroup extends TestGroup {
