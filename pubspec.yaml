@@ -7,6 +7,6 @@ authors:
  - Lewis Gunsch <lewis@gunsch.ca>
 
 dependencies:
-  unittest: ">=0.7.0 <0.8.0"
+  unittest: ">=0.7.0 <0.9.0"
   log4dart: ">=1.4.8 <2.0.0"
 
