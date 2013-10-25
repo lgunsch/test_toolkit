@@ -104,3 +104,7 @@ class MultiGroup extends TestGroup {
 [examples]: https://github.com/lgunsch/test_toolkit/blob/master/test/test.dart
 [dart]: http://www.dartlang.org/
 [unittest]: http://pub.dartlang.org/packages/unittest
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lgunsch/test_toolkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
