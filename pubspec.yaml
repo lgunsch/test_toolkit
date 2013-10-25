@@ -6,7 +6,9 @@ description: >
 authors:
  - Lewis Gunsch <lewis@gunsch.ca>
 
+environment:
+  sdk: '>=0.7.0 <0.9.0'
+
 dependencies:
   unittest: ">=0.7.0 <0.9.0"
   log4dart: ">=1.4.8 <2.0.0"
-
