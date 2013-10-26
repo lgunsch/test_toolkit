@@ -101,6 +101,13 @@ class MultiGroup extends TestGroup {
 }
 ```
 
+Bugs & Feature Requests
+-----------------------
+Any bugs reports, or features requests can be from the github project page.
+See: [issues]
+
+
+[issues]: https://github.com/lgunsch/test_toolkit/issues
 [examples]: https://github.com/lgunsch/test_toolkit/blob/master/test/test.dart
 [dart]: http://www.dartlang.org/
 [unittest]: http://pub.dartlang.org/packages/unittest
