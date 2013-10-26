@@ -1,5 +1,5 @@
 name: test_toolkit
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/lgunsch/test_toolkit
 description: >
   A simple test framework to organize your tests and keep them DRY.
