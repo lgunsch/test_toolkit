@@ -49,21 +49,18 @@ void main() {
 
 // SimpleGroup demonstrates a single test ran in a group
 class SimpleGroup extends TestGroup {
-  String status;
+  String status = null;
 
   void setUp() {
-    expect(status, isNull);
-    status = 'setUp';
+    status = 'setup the test';
   }
 
   @testdoc('A simple test case')
   void runTest() {
-    expect(status, equals('setUp'));
-    status = 'runTest';
+    expect(status, isNotNull);
   }
 
   void tearDown() {
-    expect(status, equals('runTest'));
     status = null;
   }
 }
@@ -72,35 +69,40 @@ class SimpleGroup extends TestGroup {
 // MultiGroup demonstrates 3 test methods all ran in a group.
 @groupdoc('Multi groupdoc')
 class MultiGroup extends TestGroup {
-  String status;
+  Completer completer;
 
   void setUp() {
-    expect(status, isNull);
-    status = 'setUp';
-  }
-
-  void tearDown() {
-    expect(status, equals('ran'));
-    status = null;
+    completer = new Completer<string>();
   }
 
   @testdoc('test 1')
   void testFirst() {
-    expect(status, equals('setUp'));
-    status = 'ran';
+    var data = 'first test data';
+    addCompleterAssert(completer, data);
+    completer.complete(data);
   }
 
   @otherdescriptor('this method has 2 metadata descriptors.')
   @testdoc('test 2')
   void testSecond() {
-    expect(status, equals('setUp'));
-    status = 'ran';
+    var delay = new Duration(milliseconds: 10);
+    var data = 'second test data';
+    addCompleterAssert(completer, data);
+    new Timer(delay, () => completer.complete(data));
   }
 
   // testdoc string is method name by default when its missing
   void testThird() {
-    expect(status, equals('setUp'));
-    status = 'ran';
+    completer.future.catchError((e) {
+      expectAsync0(() {});
+    });
+    completer.completeError(new Exception());
+  }
+
+  void addCompleterAssert(completer, data) {
+    completer.future.then(expectAsync1((str) {
+      expect(str, equals(data), reason: "Data string does not match.");
+    }));
   }
 }
 
