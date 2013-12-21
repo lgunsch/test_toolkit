@@ -73,18 +73,16 @@ class TestGroup {
     var instanceMirror = reflect(this);
     var classMirror = instanceMirror.type;
 
-    for (var symbol in classMirror.methods.keys) {
+    classMirror.instanceMembers.forEach((symbol, method) {
       var name = MirrorSystem.getName(symbol);
-      if (!_isTestMethod(name)) {
-        continue;
+      if (!method.isRegularMethod || !_isTestMethod(name)) {
+        return;
       }
-
-      var method = classMirror.methods[symbol];
 
       // Skip runTest method if its not implemented in the child class.
       var owner = MirrorSystem.getName(method.owner.simpleName);
       if (name == 'runTest' && owner.startsWith('TestCase')) {
-        continue;
+        return;
       }
 
       var description = _getDescription(method);
@@ -93,7 +91,7 @@ class TestGroup {
       unittest.setUp(this.setUp);
       unittest.tearDown(this.tearDown);
       unittest.test(description, () => instanceMirror.invoke(symbol, []));
-    }
+    });
   }
 
   bool _isTestMethod(String name) {
