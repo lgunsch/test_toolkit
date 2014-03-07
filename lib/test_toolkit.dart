@@ -7,10 +7,10 @@ library test_toolkit;
 
 import 'dart:mirrors';
 
-import 'package:log4dart/log4dart.dart';
 import 'package:unittest/unittest.dart' as unittest;
 
-final _logger = LoggerFactory.getLogger("test_toolkit");
+final testGroupName = MirrorSystem.getName(reflectClass(TestGroup).simpleName);
+
 
 /**
  * TestGroup is used to organize your tests into groups sharing the same
@@ -44,11 +44,8 @@ class TestGroup {
     }
 
     // Prefer groupdoc over description passed in as a parameter
-    var descriptors = classMirror.metadata;
-    for (var descriptor in descriptors) {
-      if (descriptor.reflectee is groupdoc) {
-        description = descriptor.reflectee.doc;
-      }
+    if (hasGroupdoc(classMirror)) {
+      description = getDescription(classMirror);
     }
     unittest.group(description, run);
   }
@@ -73,34 +70,41 @@ class TestGroup {
     var instanceMirror = reflect(this);
     var classMirror = instanceMirror.type;
 
-    for (var symbol in classMirror.methods.keys) {
+    classMirror.instanceMembers.forEach((symbol, method) {
       var name = MirrorSystem.getName(symbol);
-      if (!_isTestMethod(name)) {
-        continue;
+      if (!method.isRegularMethod || !isTestMethod(name)) {
+        return;
       }
-
-      var method = classMirror.methods[symbol];
 
       // Skip runTest method if its not implemented in the child class.
       var owner = MirrorSystem.getName(method.owner.simpleName);
-      if (name == 'runTest' && owner.startsWith('TestCase')) {
-        continue;
+      if (name == 'runTest' && owner == testGroupName) {
+        return;
       }
 
-      var description = _getDescription(method);
-      _logger.info('Running test $name: $description.');
+      var description = getDescription(method);
 
       unittest.setUp(this.setUp);
       unittest.tearDown(this.tearDown);
       unittest.test(description, () => instanceMirror.invoke(symbol, []));
-    }
+    });
   }
 
-  bool _isTestMethod(String name) {
+  bool isTestMethod(String name) {
     return name.startsWith('test') || name == 'runTest';
   }
 
-  String _getDescription(MethodMirror method) {
+  bool hasGroupdoc(DeclarationMirror method) {
+    var description = MirrorSystem.getName(method.simpleName);
+    for (var descriptor in method.metadata) {
+      if (descriptor.reflectee is testdoc) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  String getDescription(DeclarationMirror method) {
     var description = MirrorSystem.getName(method.simpleName);
     for (var descriptor in method.metadata) {
       if (descriptor.reflectee is testdoc) {
