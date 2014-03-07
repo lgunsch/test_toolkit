@@ -7,10 +7,7 @@ library test_toolkit;
 
 import 'dart:mirrors';
 
-import 'package:log4dart/log4dart.dart';
 import 'package:unittest/unittest.dart' as unittest;
-
-final _logger = LoggerFactory.getLogger("test_toolkit");
 
 final testGroupName = MirrorSystem.getName(reflectClass(TestGroup).simpleName);
 
@@ -89,7 +86,6 @@ class TestGroup {
       }
 
       var description = _getDescription(method);
-      _logger.info('Running test $name: $description.');
 
       unittest.setUp(this.setUp);
       unittest.tearDown(this.tearDown);
