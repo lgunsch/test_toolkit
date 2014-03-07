@@ -44,11 +44,8 @@ class TestGroup {
     }
 
     // Prefer groupdoc over description passed in as a parameter
-    var descriptors = classMirror.metadata;
-    for (var descriptor in descriptors) {
-      if (descriptor.reflectee is groupdoc) {
-        description = descriptor.reflectee.doc;
-      }
+    if (hasGroupdoc(classMirror)) {
+      description = getDescription(classMirror);
     }
     unittest.group(description, run);
   }
@@ -97,7 +94,17 @@ class TestGroup {
     return name.startsWith('test') || name == 'runTest';
   }
 
-  String getDescription(MethodMirror method) {
+  bool hasGroupdoc(DeclarationMirror method) {
+    var description = MirrorSystem.getName(method.simpleName);
+    for (var descriptor in method.metadata) {
+      if (descriptor.reflectee is testdoc) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  String getDescription(DeclarationMirror method) {
     var description = MirrorSystem.getName(method.simpleName);
     for (var descriptor in method.metadata) {
       if (descriptor.reflectee is testdoc) {
