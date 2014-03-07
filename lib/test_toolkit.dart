@@ -75,7 +75,7 @@ class TestGroup {
 
     classMirror.instanceMembers.forEach((symbol, method) {
       var name = MirrorSystem.getName(symbol);
-      if (!method.isRegularMethod || !_isTestMethod(name)) {
+      if (!method.isRegularMethod || !isTestMethod(name)) {
         return;
       }
 
@@ -85,7 +85,7 @@ class TestGroup {
         return;
       }
 
-      var description = _getDescription(method);
+      var description = getDescription(method);
 
       unittest.setUp(this.setUp);
       unittest.tearDown(this.tearDown);
@@ -93,11 +93,11 @@ class TestGroup {
     });
   }
 
-  bool _isTestMethod(String name) {
+  bool isTestMethod(String name) {
     return name.startsWith('test') || name == 'runTest';
   }
 
-  String _getDescription(MethodMirror method) {
+  String getDescription(MethodMirror method) {
     var description = MirrorSystem.getName(method.simpleName);
     for (var descriptor in method.metadata) {
       if (descriptor.reflectee is testdoc) {
