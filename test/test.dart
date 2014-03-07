@@ -1,18 +1,15 @@
 // Copyright © 2013 Lewis Gunsch and contributors (see also: LICENSE)
+library test;
 
 import 'dart:async';
 
 import 'package:unittest/unittest.dart';
 import 'package:unittest/mock.dart';
 
-import 'package:unittest/vm_config.dart';
-
 import 'package:test_toolkit/test_toolkit.dart';
 
 
 void main() {
-  useVMConfiguration();
-
   // First calling convention.
   group('Simple', new SimpleGroup());
   group('Multi', new MultiGroup());
