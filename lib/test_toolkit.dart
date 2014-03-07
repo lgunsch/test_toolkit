@@ -12,6 +12,9 @@ import 'package:unittest/unittest.dart' as unittest;
 
 final _logger = LoggerFactory.getLogger("test_toolkit");
 
+final testGroupName = MirrorSystem.getName(reflectClass(TestGroup).simpleName);
+
+
 /**
  * TestGroup is used to organize your tests into groups sharing the same
  * setup code. Extend `TestGroup`, and then the [runTest] method, as well
@@ -81,7 +84,7 @@ class TestGroup {
 
       // Skip runTest method if its not implemented in the child class.
       var owner = MirrorSystem.getName(method.owner.simpleName);
-      if (name == 'runTest' && owner.startsWith('TestCase')) {
+      if (name == 'runTest' && owner == testGroupName) {
         return;
       }
 
