@@ -1,10 +1,11 @@
 name: test_toolkit
-version: 0.4.0
+version: 0.5.0
 homepage: https://github.com/lgunsch/test_toolkit
 description: >
   A simple test framework to organize your tests and keep them DRY.
 authors:
  - Lewis Gunsch <lewis@gunsch.ca>
+ - Konstantin Borisov <smeagol74@gmail.com>
 
 environment:
   sdk: ">=1.2.0 <2.0.0"
