@@ -3,7 +3,7 @@ library web_test;
 
 import 'package:unittest/html_enhanced_config.dart';
 
-import '../test/test.dart' as test;  // TODO: Fix me once there is a better solution
+import 'test.dart' as test;
 
 void main() {
   useHtmlEnhancedConfiguration();

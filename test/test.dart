@@ -4,7 +4,7 @@ library test;
 import 'dart:async';
 
 import 'package:unittest/unittest.dart';
-import 'package:unittest/mock.dart';
+import 'package:mock/mock.dart';
 
 import 'package:test_toolkit/test_toolkit.dart';
 
@@ -91,13 +91,13 @@ class MultiGroup extends TestGroup {
   // testdoc string is method name by default when its missing
   void testThird() {
     completer.future.catchError((e) {
-      expectAsync0(() {});
+      expectAsync(() {});
     });
     completer.completeError(new Exception());
   }
 
   void addCompleterAssert(completer, data) {
-    completer.future.then(expectAsync1((str) {
+    completer.future.then(expectAsync((str) {
       expect(str, equals(data), reason: "Data string does not match.");
     }));
   }
