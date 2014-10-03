@@ -36,7 +36,7 @@ class TestGroup {
    * If description parameter is specified, it will give description to [group].
    * Otherwise description will be taken from [groupdoc] metadata annotation
    * for this [TestGroup]. If there is no [groupdoc] metadata annotation for
-   * this [TestGroup] then it's class name will be taken as description.
+   * this [TestGroup] then its class name will be taken as description.
    */
   void groupRun([String description]) {
     var classMirror = reflect(this).type;
@@ -66,8 +66,8 @@ class TestGroup {
   /**
    * Run all the tests without a [group]; Use [groupRun] if you want them
    * run in a [group].
-   * To be qualified as test, method should have name equal to 'runTest',
-   * or should start from 'test'.
+   * To be qualified as a test, method should have name equal to 'runTest',
+   * or should start with 'test'.
    */
   void run() {
     var instanceMirror = reflect(this);
