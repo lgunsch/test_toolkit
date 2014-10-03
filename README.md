@@ -8,7 +8,7 @@ Installation
 
 Add this package to your pubspec.yaml file:
 
-    dependencies:
+    dev_dependencies:
       test_toolkit: any
 
 Then, run `pub install` to download and link in the package.

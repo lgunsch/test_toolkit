@@ -33,21 +33,22 @@ class TestGroup {
 
   /**
    * Run all the test methods by calling [group].
-   * If there is no [groupdoc] metadata annotation for this [TestGroup]
-   * then an optional [description] may also be provided. [groupdoc] takes
-   * precedence over the description parameter.
+   * If description parameter is specified, it will give description to [group].
+   * Otherwise description will be taken from [groupdoc] metadata annotation
+   * for this [TestGroup]. If there is no [groupdoc] metadata annotation for
+   * this [TestGroup] then its class name will be taken as description.
    */
   void groupRun([String description]) {
     var classMirror = reflect(this).type;
+    var groupName = MirrorSystem.getName(classMirror.simpleName);
     if (description == null) {
-      description = MirrorSystem.getName(classMirror.simpleName);
+      if (hasGroupdoc(classMirror)) {
+        groupName = getDescription(classMirror);
+      }
+    } else {
+      groupName = description;
     }
-
-    // Prefer groupdoc over description passed in as a parameter
-    if (hasGroupdoc(classMirror)) {
-      description = getDescription(classMirror);
-    }
-    unittest.group(description, run);
+    unittest.group(groupName, run);
   }
 
   /**
@@ -64,7 +65,9 @@ class TestGroup {
 
   /**
    * Run all the tests without a [group]; Use [groupRun] if you want them
-   * run in a [group]
+   * run in a [group].
+   * To be qualified as a test, method should have name equal to 'runTest',
+   * or should start with 'test'.
    */
   void run() {
     var instanceMirror = reflect(this);
@@ -94,20 +97,20 @@ class TestGroup {
     return name.startsWith('test') || name == 'runTest';
   }
 
-  bool hasGroupdoc(DeclarationMirror method) {
-    var description = MirrorSystem.getName(method.simpleName);
-    for (var descriptor in method.metadata) {
-      if (descriptor.reflectee is testdoc) {
+  bool hasGroupdoc(DeclarationMirror mirror) {
+    var description = MirrorSystem.getName(mirror.simpleName);
+    for (var descriptor in mirror.metadata) {
+      if (descriptor.reflectee is groupdoc) {
         return true;
       }
     }
     return false;
   }
 
-  String getDescription(DeclarationMirror method) {
-    var description = MirrorSystem.getName(method.simpleName);
-    for (var descriptor in method.metadata) {
-      if (descriptor.reflectee is testdoc) {
+  String getDescription(DeclarationMirror mirror) {
+    var description = MirrorSystem.getName(mirror.simpleName);
+    for (var descriptor in mirror.metadata) {
+      if (descriptor.reflectee is groupdoc || descriptor.reflectee is testdoc) {
         description = descriptor.reflectee.doc;
       }
     }
