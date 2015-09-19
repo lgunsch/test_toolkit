@@ -7,7 +7,7 @@ library test_toolkit;
 
 import 'dart:mirrors';
 
-import 'package:unittest/unittest.dart' as unittest;
+import 'package:test/test.dart' as test;
 
 final testGroupName = MirrorSystem.getName(reflectClass(TestGroup).simpleName);
 
@@ -48,7 +48,11 @@ class TestGroup {
     } else {
       groupName = description;
     }
-    unittest.group(groupName, run);
+    test.group(groupName, () {
+      test.setUp(this.setUp);
+      test.tearDown(this.tearDown);
+      _doRun();
+    });
   }
 
   /**
@@ -70,6 +74,17 @@ class TestGroup {
    * or should start with 'test'.
    */
   void run() {
+    // Add an anonymous group here
+    // because in test package, setUp() can't be called multiple times
+    // for the same group.
+    test.group('', () {
+      test.setUp(this.setUp);
+      test.tearDown(this.tearDown);
+      _doRun();
+    });
+  }
+
+  void _doRun() {
     var instanceMirror = reflect(this);
     var classMirror = instanceMirror.type;
 
@@ -87,9 +102,7 @@ class TestGroup {
 
       var description = getDescription(method);
 
-      unittest.setUp(this.setUp);
-      unittest.tearDown(this.tearDown);
-      unittest.test(description, () => instanceMirror.invoke(symbol, []));
+      test.test(description, () => instanceMirror.invoke(symbol, []));
     });
   }
 

@@ -3,7 +3,7 @@ library test;
 
 import 'dart:async';
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:mock/mock.dart';
 
 import 'package:test_toolkit/test_toolkit.dart';

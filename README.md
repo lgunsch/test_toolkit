@@ -1,7 +1,7 @@
 Test Toolkit
 ============
 
-A simple test framework for the [Dart][dart] language to organize your [unittest][unittest] tests and keep them DRY.
+A simple test framework for the [Dart][dart] language to organize your [test][test] tests and keep them DRY.
 
 Installation
 ------------
@@ -18,8 +18,8 @@ TestGroup
 
 TestGroup is used to organize your tests into groups sharing the same setup
 code. Extend `TestGroup`, implement the `runTest` method, or add in methods
-prefixed with `test`. These methods will be run as a unittest `group`, with
-each method being run in a unittest `test`. If you only need a single test
+prefixed with `test`. These methods will be run as a test `group`, with
+each method being run in a test `test`. If you only need a single test
 method, simply implement `runTest`. If you have multiple tests then prefix
 each method with `test` (implementing `runTest` is not required).
 
@@ -35,7 +35,7 @@ Example
 -------
 
 ```dart
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:test_toolkit/test_toolkit.dart';
 
 void main() {
@@ -111,7 +111,7 @@ See: [issues]
 [issues]: https://github.com/lgunsch/test_toolkit/issues
 [examples]: https://github.com/lgunsch/test_toolkit/blob/master/test/test.dart
 [dart]: http://www.dartlang.org/
-[unittest]: http://pub.dartlang.org/packages/unittest
+[test]: http://pub.dartlang.org/packages/test
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lgunsch/test_toolkit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
