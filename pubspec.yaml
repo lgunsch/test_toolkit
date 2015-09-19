@@ -11,8 +11,8 @@ environment:
   sdk: ">=1.2.0 <2.0.0"
 
 dependencies:
-  unittest: ">=0.11.0 <0.12.0"
-  
+  test: any
+
 dev_dependencies:
   browser: any
   mock: ">=0.11.0 <0.12.0"
