@@ -1,5 +1,6 @@
 pubspec.lock
 packages/
+.packages
 test/packages
 build
 web/packages
